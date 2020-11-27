@@ -17,6 +17,10 @@ if sys.platform == "win32":
 else:
      delimiter = "/"
 
+if not files:
+    print("No yml compose files found")
+    sys.exit(0)
+
 # Loop through all yml files in the specified directory
 for currFile in files:
      if currFile.rfind(delimiter) != -1:
@@ -55,6 +59,8 @@ def menu():
                print (str(i+1) + '. ' + containers[i][0])
 
           print ("99. Exit")
+          
+          container_response=0
 
           container_response=int(input("Please select a container: "))
 
@@ -64,6 +70,7 @@ def menu():
           # Index is 0 based so subtract 1
           container_response=container_response-1
           
+          # get the action
           for a in range(len(actions)):
                print (str(a+1) + '. ' + actions[a])
 
