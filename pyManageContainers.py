@@ -5,7 +5,7 @@ import re
 import sys
 
 ignoreFiles = [] # Enter file names separated by a comma to specify compose files to ignore
-ymlDirectory="../composeScripts/"
+ymlDirectory="./"
 
 # Don't edit anything below this line
 files=glob.glob(ymlDirectory + "*.yml")
