@@ -4,7 +4,7 @@ pyManageContainers is a Python based command line script that reads a directory 
 
 ### Setup
 
-- Edit pyManageContainers.py and edit the line `files=glob.glob("*.yml")` and set the full path to your yml files. So for example `files=glob.glob("/home/devslash/compose/*.yml")`on Linux or `files=glob.glob("C:\\Docker\\Compose\\*.yml")` The double slashes are important.
+- Edit pyManageContainers.py and find the line `ymlDirectory="./"` and set it to the full path where your docker compose yml scripts are located. So for example `ymlDirectory=/home/devslash/compose"`on Linux or `ymlDirectory="C:\\Docker\\Compose\\"` The double slashes are important for Windows. The path must end in a slash.
 - If you want to ignore any compose files, enter the file names into `ignoreFiles=[]` with each file name wrapped in double quotes and a comma separating each file name. Ex: `ignoreFiles=["portainer.yml","nextcloud.yml"]`
 - Run the python script `python pyManageContainers.py
 
