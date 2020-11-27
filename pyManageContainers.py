@@ -5,9 +5,10 @@ import re
 import sys
 
 ignoreFiles = [] # Enter file names separated by a comma to specify compose files to ignore
-files=glob.glob("*.yml")
+ymlDirectory="../composeScripts/"
 
 # Don't edit anything below this line
+files=glob.glob(ymlDirectory + "*.yml")
 containers = [] # Holds all compose files 
 delimiter=None
 
@@ -50,6 +51,9 @@ for currFile in files:
 # Sort results by index 0
 containers=sorted(containers,key=itemgetter(0))
 actions=['Build','Stop','Stop & Delete','Recreate']
+ 
+# Set working directory so docker-compose can find the .env if it is needed
+os.chdir(ymlDirectory)
 
 def menu():
      container_response = 0
