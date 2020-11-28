@@ -9,6 +9,7 @@ ymlDirectory="./"
 
 # Don't edit anything below this line
 files=glob.glob(ymlDirectory + "*.yml")
+
 containers = [] # Holds all compose files 
 delimiter=None
 
@@ -40,14 +41,14 @@ for currFile in files:
      matches = []
 
      # Find all lines contianing container_name that do not start with a comment (#)
-     matches=re.findall(r"([^#]container_name: [A-Z]\S+)",contents)
+     matches=re.findall(r"([^#]container_name: [a-zA-Z]\S+)",contents)
      
      # Some compose files define more than 1 container name. This script only reads up to 2 container_names
      if len(matches) == 1:
          containers.append((matches[0].replace("container_name: ",""),currFile))
      elif len(matches) == 2:
          containers.append((matches[0].replace("container_name: ",""),currFile,matches[1].replace("container_name: ","")))
-  
+
 # Sort results by index 0
 containers=sorted(containers,key=itemgetter(0))
 actions=['Build','Stop','Stop & Delete','Recreate']
