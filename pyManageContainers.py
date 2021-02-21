@@ -5,10 +5,15 @@ import re
 import sys
 
 if len(sys.argv) == 3: 
-     container_num=sys.argv[1]
-     container_action=sys.argv[2]
+     container_name=sys.argv[1]
+     
+     try:
+          container_action=int(sys.argv[2])
+     except:
+          print("The action is invalid")
+          sys.exit()
 else:
-     container_num=0
+     container_name=""
      container_action=0
 
 ignoreFiles = [] # Enter file names separated by a comma to specify compose files to ignore
@@ -64,10 +69,11 @@ actions=['Build','Stop','Stop & Delete','Recreate']
 os.chdir(ymlDirectory)
 
 def menu():
-     container_response = 0
-
-     while container_response != 99:
-          if container_num == 0:
+     container_response = -1
+     container_num=-1;
+     
+     if container_name == "":
+          while container_response != 99:
                for i in range(len(containers)):
                     print (str(i+1) + '. ' + containers[i][0])
 
@@ -82,64 +88,78 @@ def menu():
 
                # Index is 0 based so subtract 1
                container_response=container_response-1
-          else:
-               container_response=int(container_num)-1
+                
+               break
+     else: # container name was provided as a cmd line param
+          for i in range(len(containers)):
+               if containers[i][0].strip() == container_name:
+                    container_response=i;
+                    break
+          
+          if container_response == -1:
+               print("Invalid container name");
+               sys.exit()
      
-          # get the action
-          if container_num == 0:
-               for a in range(len(actions)):
-                    print (str(a+1) + '. ' + actions[a])
+     # get the action
+     if container_action == 0:
+          for a in range(len(actions)):
+               print (str(a+1) + '. ' + actions[a])
 
                print ("99. Exit")
 
                action_response=int(input("Please select an action: "))
-          else:
-               action_response=int(container_action)
-          
-          if action_response == 1: # Build
-               cmd="docker-compose -f " + containers[container_response][1] + " up --no-start && docker start " + containers[container_response][0]
-             
-               if len(containers[container_response]) > 2:
-                   cmd=cmd + " && docker start " + containers[container_response][2]
-
-               os.system(cmd)
-
-               sys.exit(0)
-          elif action_response == 2: # Stop
-               cmd="docker stop " + containers[container_response][0]
-
-               if len(containers[container_response]) > 2:
-                   cmd=cmd + " && docker stop " + containers[container_response][2]
-
-               os.system(cmd)
-
-               sys.exit(0)
-          elif action_response == 3: # Stop & Delete
-               cmd="docker stop " + containers[container_response][0] + " && docker rm " + containers[container_response][0]
-
-               if len(containers[container_response]) > 2:
-                   cmd=cmd + " && docker stop " + containers[container_response][2] + " && docker rm " + containers[container_response][2]
-
-               os.system(cmd)
-
-               sys.exit(0)
-          elif action_response == 4: # Recreate
-               cmd="docker stop " + containers[container_response][0] + " && docker rm " + containers[container_response][0]
-               
-               if len(containers[container_response]) > 2:
-                    cmd=cmd + " && docker stop " + containers[container_response][2] + " && docker rm " + containers[container_response][2]
-
-               os.system(cmd)
-
-               cmd="docker-compose -f " + containers[container_response][1] + " up --no-start && docker start " + containers[container_response][0]
-             
-               if len(containers[container_response]) > 2:
-                    cmd=cmd + " && docker start " + containers[container_response][2]
-
-               os.system(cmd)
-
-               sys.exit(0)
-          elif action_response == 99:
+     else:
+          if container_action < 0 or container_action > len(actions):
+               print("Invalid action number")
                sys.exit()
+         
+          action_response=container_action
 
+     # Start the build
+     if action_response == 1: # Build
+          cmd="docker-compose -f " + containers[container_response][1] + " up --no-start && docker start " + containers[container_response][0]
+             
+          if len(containers[container_response]) > 2:
+               cmd=cmd + " && docker start " + containers[container_response][2]
+
+          os.system(cmd)
+
+          sys.exit(0)
+     elif action_response == 2: # Stop
+          cmd="docker stop " + containers[container_response][0]
+
+          if len(containers[container_response]) > 2:
+               cmd=cmd + " && docker stop " + containers[container_response][2]
+
+          os.system(cmd)
+
+          sys.exit(0)
+     elif action_response == 3: # Stop & Delete
+          cmd="docker stop " + containers[container_response][0] + " && docker rm " + containers[container_response][0]
+
+          if len(containers[container_response]) > 2:
+              cmd=cmd + " && docker stop " + containers[container_response][2] + " && docker rm " + containers[container_response][2]
+
+          os.system(cmd)
+
+          sys.exit(0)
+     elif action_response == 4: # Recreate
+          cmd="docker stop " + containers[container_response][0] + " && docker rm " + containers[container_response][0]
+               
+          if len(containers[container_response]) > 2:
+               cmd=cmd + " && docker stop " + containers[container_response][2] + " && docker rm " + containers[container_response][2]
+
+          os.system(cmd)
+
+          cmd="docker-compose -f " + containers[container_response][1] + " up --no-start && docker start " + containers[container_response][0]
+             
+          if len(containers[container_response]) > 2:
+               cmd=cmd + " && docker start " + containers[container_response][2]
+
+          os.system(cmd)
+
+          sys.exit(0)
+     elif action_response == 99:
+          sys.exit()
+ 
 menu()
