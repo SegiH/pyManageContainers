@@ -8,6 +8,6 @@ pyManageContainers is a Python based command line script that reads a directory 
 - If you want to ignore any compose files, enter the file names into `ignoreFiles=[]` with each file name wrapped in double quotes and a comma separating each file name. Ex: `ignoreFiles=["portainer.yml","nextcloud.yml"]`
 - Run the python script `python pyManageContainers.py`
 
-You can also use command line parameters to run this script without any user input. The way you run it is with the menu number of the container and the menu # of the action. For example, when you run this script without any command line parameters if you see 2. Apache as the first container, you can run `python pyManageContainers.py 2 1` to automatically build this container. The second number represents the action number.
+You can also use command line parameters to run this script without any user input. The way you run it is with the name of the container and the menu # of the action. For example, you can recreate your container called Wordpress by running the command `python pyManageContainers.py Wordpress 4` where 4 is the action to take and corresponds to the number in the action selection.
 
 Please submit an issue if you run into any problems or would like to suggest new features. 
