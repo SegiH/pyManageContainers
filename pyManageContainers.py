@@ -10,7 +10,12 @@ ymlDirectory="./"
 # Don't edit anything below this line
 actions=['Build','Stop','Stop & Delete','Recreate']
 
-def buildContainer(container,container_action):
+
+def buildContainer(container_index,container_action):
+     global containers 
+    
+     container = containers[container_index]
+
      if container_action == 1: # Build
           cmd="docker-compose -f " + container[1] + " up --no-start && docker start " + container[0]
              
@@ -88,7 +93,8 @@ def containerMenu(containers):
           print ("99. Exit")
 
           try:
-               container_action=int(input("Please select an action: "))
+               container_action=input("Please select an action: ")
+               container_action=int(container_action)
           except:
                print("Invalid input")
  
@@ -100,7 +106,7 @@ def containerMenu(containers):
           else:
                break
         
-     buildContainer(container_name,container_action,containers)
+     buildContainer(container_name,container_action)
 
 def getContainers():
      global ignoreFiles
@@ -165,7 +171,7 @@ if len(sys.argv) == 3:
           if containers[i][0].strip() == sys.argv[1]:
                container_name_index=int(i);
                break
-          
+   
      if container_name_index == -1:
           print("Invalid container name");
           sys.exit()
