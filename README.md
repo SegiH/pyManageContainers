@@ -10,4 +10,6 @@ pyManageContainers is a Python based command line script that reads a directory 
 
 You can also use command line parameters to run this script without any user input. The way you run it is with the name of the container and the menu # of the action. For example, you can recreate your container called Wordpress by running the command `python pyManageContainers.py Wordpress 4` where 4 is the action to take and corresponds to the number in the action selection.
 
+You can also use `--all` parameter to perform an action on all containers. For example, to rebuild all containers, you can run `python pyManageContainers.py --all 4`
+
 Please submit an issue if you run into any problems or would like to suggest new features. 
